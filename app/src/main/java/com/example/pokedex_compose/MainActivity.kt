@@ -27,7 +27,9 @@ class MainActivity : ComponentActivity() {
                     "Bulbassaur",
                     "001",
                     R.drawable.ic_01,
-                    MaterialTheme.colors.secondaryVariant
+                    MaterialTheme.colors.secondaryVariant,
+                    R.drawable.ic_grass,
+                    null
                 )
             }
         }
@@ -36,26 +38,33 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun PokemonCard(
         name: String, pokedexNumber: String,
-        @DrawableRes picture: Int, backgroundColor: Color
+        @DrawableRes picture: Int, backgroundColor: Color, @DrawableRes pokemonTypeOne: Int,
+        @DrawableRes pokemonTypeTwo: Int?
     ) {
         Card(
             modifier = Modifier.padding(5.dp), shape = MaterialTheme.shapes.small,
             backgroundColor = backgroundColor
         ) {
             Column(
-                Modifier.padding(10.dp, 25.dp),
+                Modifier.padding(10.dp, 10.dp, 10.dp, 10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    modifier = Modifier.size(85.dp),
+                    modifier = Modifier.size(100.dp),
                     painter = painterResource(id = picture), contentDescription = "a pokemon",
                     alignment = Alignment.BottomEnd
                 )
                 Text(text = name, color = Color.White, fontSize = 35.sp)
-                Text(modifier = Modifier.width(IntrinsicSize.Max).align(Alignment.Start),
-                    text = "N.º $pokedexNumber", color = Color.Black, fontSize = 12.sp,
-                    textAlign = TextAlign.Start
+                Text(
+                    modifier = Modifier.align(Alignment.Start),
+                    text = "N.º $pokedexNumber", color = Color.Black, fontSize = 12.sp
                 )
+                Row(modifier = Modifier.align(Alignment.Start)) {
+                    Image( modifier = Modifier.size(45.dp) ,
+                        painter = painterResource(id = pokemonTypeOne),
+                        contentDescription = "pokemon type one"
+                    )
+                }
             }
         }
     }
@@ -68,7 +77,9 @@ class MainActivity : ComponentActivity() {
                 "Bulbassaur",
                 "001",
                 R.drawable.ic_01,
-                MaterialTheme.colors.secondaryVariant
+                MaterialTheme.colors.secondaryVariant,
+                R.drawable.ic_grass,
+                null
             )
         }
     }
