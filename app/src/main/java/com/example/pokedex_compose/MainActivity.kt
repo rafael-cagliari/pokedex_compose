@@ -42,11 +42,11 @@ class MainActivity : ComponentActivity() {
         @DrawableRes pokemonTypeTwo: Int?
     ) {
         Card(
-            modifier = Modifier.padding(5.dp), shape = MaterialTheme.shapes.small,
+            modifier = Modifier.padding(5.dp), shape = MaterialTheme.shapes.medium,
             backgroundColor = backgroundColor
         ) {
             Column(
-                Modifier.padding(10.dp, 10.dp, 10.dp, 10.dp),
+                Modifier.padding(10.dp, 0.dp, 10.dp, 0.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
