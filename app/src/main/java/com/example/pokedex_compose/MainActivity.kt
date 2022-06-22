@@ -4,9 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -20,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pokedex_compose.model.Pokemon
+import com.example.pokedex_compose.ui.theme.GrassTypeGreen
 import com.example.pokedex_compose.ui.theme.Pokedex_composeTheme
 
 class MainActivity : ComponentActivity() {
@@ -37,33 +42,33 @@ class MainActivity : ComponentActivity() {
         Card(
             modifier = Modifier
                 .padding(5.dp)
-                .size(200.dp), shape = MaterialTheme.shapes.medium,
+                .fillMaxWidth()
+                .height(200.dp)
+                .clickable {  }, shape = MaterialTheme.shapes.medium,
             backgroundColor = pokemon.color
         ) {
             Column(
-                Modifier.padding(10.dp, 0.dp, 10.dp, 0.dp),
+                Modifier.padding(horizontal = 10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
                     modifier = Modifier.size(100.dp),
-                    painter = painterResource(id = pokemon.image), contentDescription = "a pokemon",
-                    alignment = Alignment.BottomEnd
+                    painter = painterResource(id = pokemon.image), contentDescription = "a pokemon"
                 )
                 Text(
                     text = pokemon.name,
-                    color = Color.White,
-                    fontSize = 27.sp,
+                    color = MaterialTheme.colors.onPrimary,
+                    style = MaterialTheme.typography.h5
                 )
-                Text(
-                    modifier = Modifier.align(Alignment.Start),
-                    text = "N.º ${pokemon.number}",
-                    color = Color.Black,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Row(modifier = Modifier.align(Alignment.Start)) {
+
+                Row(modifier= Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text(modifier = Modifier.align(Alignment.CenterVertically).weight(1F),
+                        text = "N.º ${pokemon.number}",
+                        color = MaterialTheme.colors.onBackground,
+                        style = MaterialTheme.typography.caption
+                    )
                     Image(
-                        modifier = Modifier.size(45.dp),
+                        modifier = Modifier.padding(start = 25.dp).size(45.dp),
                         painter = painterResource(id = pokemon.type),
                         contentDescription = "pokemon type one"
                     )
@@ -72,9 +77,13 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     fun PokemonList(pokemonList: List<Pokemon>) {
-        LazyColumn {
+        LazyVerticalGrid(
+            modifier = Modifier.fillMaxWidth(), cells = GridCells.Fixed(2),
+            contentPadding = PaddingValues(10.dp)
+        ) {
             items(pokemonList) { pokemon -> PokemonCard(pokemon = pokemon) }
         }
     }
@@ -83,7 +92,15 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun DefaultPreview() {
         Pokedex_composeTheme {
-            PokemonList(pokemonList = Pokemon.pokemonList)
+            PokemonCard(
+                Pokemon(
+                    "Bulsabassaur",
+                    "001",
+                    GrassTypeGreen,
+                    R.drawable.ic_01,
+                    R.drawable.ic_grass
+                )
+            )
         }
     }
 }
