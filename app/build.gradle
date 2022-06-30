@@ -59,4 +59,34 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+
+    // Navigator
+    implementation "cafe.adriel.voyager:voyager-navigator:1.0.0-rc02"
+
+    // BottomSheetNavigator
+    implementation "cafe.adriel.voyager:voyager-bottom-sheet-navigator:1.0.0-rc02"
+
+    // TabNavigator
+    implementation "cafe.adriel.voyager:voyager-tab-navigator:1.0.0-rc02"
+
+    // Transitions
+    implementation "cafe.adriel.voyager:voyager-transitions:1.0.0-rc02"
+
+    // Android ViewModel integration
+    implementation "cafe.adriel.voyager:voyager-androidx:1.0.0-rc02"
+
+    // Koin integration
+    implementation "cafe.adriel.voyager:voyager-koin:1.0.0-rc02"
+
+    // Kodein integration
+    implementation "cafe.adriel.voyager:voyager-kodein:1.0.0-rc02"
+
+    // Hilt integration
+    implementation "cafe.adriel.voyager:voyager-hilt:1.0.0-rc02"
+
+    // RxJava integration
+    implementation "cafe.adriel.voyager:voyager-rxjava:1.0.0-rc02"
+
+    // LiveData integration
+    implementation "cafe.adriel.voyager:voyager-livedata:1.0.0-rc02"
 }
