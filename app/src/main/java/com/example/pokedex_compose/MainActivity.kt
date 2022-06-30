@@ -4,6 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -13,7 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,7 +40,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Navigator(screen = RenderPokemonList(Pokemon.pokemonList))
+            Pokedex_composeTheme {
+                Navigator(screen = RenderPokemonList(Pokemon.pokemonList))
+            }
         }
     }
 
@@ -58,13 +65,32 @@ class MainActivity : ComponentActivity() {
         @Composable
         fun PokemonCard(pokemon: Pokemon) {
             val navigator = LocalNavigator.currentOrThrow
+            var wasClicked by remember { mutableStateOf(false) }
+            val surfaceColor by animateColorAsState(
+                targetValue = if (wasClicked) MaterialTheme.colors.background else pokemon.color,
+                animationSpec = tween(
+                    durationMillis = 1000,
+                    easing = FastOutSlowInEasing
+                )
+            )
+
             Card(
                 modifier = Modifier
-                    .padding(5.dp)
                     .fillMaxWidth()
                     .height(200.dp)
-                    .clickable { navigator.push(PokemonDetails(pokemon.name)) }, shape = MaterialTheme.shapes.medium,
-                backgroundColor = pokemon.color
+                    .then(if (wasClicked) Modifier.padding(15.dp) else Modifier.padding(5.dp))
+                    .animateContentSize(
+                        animationSpec = tween(
+                            durationMillis = 1000,
+                            easing = FastOutSlowInEasing
+                        )
+                    )
+                    .clickable {
+                        wasClicked = !wasClicked
+                        // navigator.push(PokemonDetails(pokemon.name))
+                    },
+                shape = if (wasClicked) MaterialTheme.shapes.small else MaterialTheme.shapes.large,
+                backgroundColor = surfaceColor
             ) {
                 Column(
                     Modifier.padding(horizontal = 10.dp),
@@ -106,7 +132,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    data class PokemonDetails(val pokemonName:String): Screen{
+    data class PokemonDetails(val pokemonName: String) : Screen {
         @Composable
         override fun Content() {
             Text(text = pokemonName)
